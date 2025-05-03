@@ -1,4 +1,3 @@
-use colored::Colorize;
 use crate::get_date;
 
 pub static NOTE_LINE_DELIMITER: &str = "||";
