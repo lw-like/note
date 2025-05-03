@@ -17,13 +17,13 @@ pub fn get_args_cmd() -> String {
     String::from( if args.len() > 1 { &args[1] } else { "" })
 }
 
-pub fn is_list_command(line: String) -> bool { line == "ls" || line == "list" }
-pub fn is_spawn_records_command(line: String) -> bool { line == "spawn" }
+pub fn is_list_command(arg: &String) -> bool { arg == "ls" || arg == "list" }
+pub fn is_spawn_records_command(arg: &String) -> bool { arg == "spawn" }
 
 pub fn get_cmd_type(cmd: String) -> CmdType {
-    if is_list_command(cmd.clone()) {
+    if is_list_command(&cmd) {
         return CmdType::List;
-    } else if is_spawn_records_command(cmd.clone()) {
+    } else if is_spawn_records_command(&cmd) {
         return CmdType::SpawnRows;
     }
 
