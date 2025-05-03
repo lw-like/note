@@ -89,10 +89,10 @@ fn save_note() -> bool {
 }
 
 fn handle_user_input() {
-    let line = cmd::read_user_input_line();
+    let line: String = cmd::read_user_input_line();
 
-    if cmd::is_list_command(line.clone()) {
-        print_last_notes();
+    if handle_args(cmd::get_cmd_type(line.clone())) {
+        return;
     }
 
     let note = Note::new(line);
@@ -119,6 +119,7 @@ fn handle_args(cmd_type: cmd::CmdType) -> bool {
         false
     }
 }
+
 fn create_required_data_structure() {
     create_dir_all(get_app_base_dir()).unwrap();
 }
@@ -126,7 +127,7 @@ fn create_required_data_structure() {
 fn main() {
     create_required_data_structure();
 
-    if handle_args(cmd::get_cmd_type()) {
+    if handle_args(cmd::get_args_cmd_type()) {
         return;
     }
 
