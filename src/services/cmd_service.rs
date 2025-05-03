@@ -20,8 +20,7 @@ pub fn get_args_cmd() -> String {
 pub fn is_list_command(line: String) -> bool { line == "ls" || line == "list" }
 pub fn is_spawn_records_command(line: String) -> bool { line == "spawn" }
 
-pub fn get_cmd_type() -> CmdType {
-    let cmd = get_args_cmd();
+pub fn get_cmd_type(cmd: String) -> CmdType {
     if is_list_command(cmd.clone()) {
         return CmdType::List;
     } else if is_spawn_records_command(cmd.clone()) {
@@ -29,4 +28,8 @@ pub fn get_cmd_type() -> CmdType {
     }
 
     CmdType::Note
+}
+
+pub fn get_args_cmd_type() -> CmdType {
+    get_cmd_type(get_args_cmd())
 }
