@@ -1,18 +1,19 @@
 mod model;
 mod services;
+mod structs;
 
 use model::note::*;
 use services::cmd_service as cmd;
+use structs::file_input::FileInput;
+use structs::std_input::StdInput;
+use structs::input::SourceReader;
 
 use std::fs::{create_dir_all, File, OpenOptions};
-use std::io;
-use std::io::{BufRead, Write};
-use std::path::Path;
+use std::io::Write;
 use chrono::{DateTime, Utc};
 use chrono_tz::Europe::Warsaw;
 use std::env::current_exe;
 use chrono_tz::Tz;
-use colored::Colorize;
 
 static NOTE_DIR: &str = "notes";
 static DATE_FORMAT: &str = "%Y-%m-%d";
@@ -42,20 +43,15 @@ fn open_file() -> File {
     OpenOptions::new().append(true).create(true).open(get_file_dir()).unwrap()
 }
 
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
-
-fn write_note(note_line: String, mut file: File) {
+fn write_note(note_line: String, mut file: File) -> bool {
     if note_line.len() == 0 {
-        return;
+        return false;
     }
 
     file.write_all((note_line.clone() + "\n").as_bytes()).expect("Unable to write to file");
     print!("Note saved: ");
     Note::parse(note_line).print();
+    true
 }
 
 fn print_info() {
@@ -63,16 +59,18 @@ fn print_info() {
     println!("      ls or list to list last notes");
     println!("      If command is not recognized note will be taken");
 }
+
 fn print_last_notes() -> bool {
-    if let Ok(lines) = read_lines(get_file_dir()) {
-        println!("\n {}", "---- NOTES:".blue().bold());
-        let mut i = 0;
-        for line in lines.map_while(Result::ok) {
-            i += 1;
-            Note::parse(line).print();
+    let fin: FileInput = FileInput::new(get_file_dir());
+    let value = match fin.read::<String>() {
+        Some(x) => x,
+        None => {
+            println!("Notes not found!");
+            String::new()
         }
-        println!("{} {} \n", "---- TOTAL COUNT: ".blue().bold(), (i.to_string()).red());
-    }
+    };
+
+    println!("{}", value);
     true
 }
 
@@ -89,7 +87,11 @@ fn save_note() -> bool {
 }
 
 fn handle_user_input() {
-    let line: String = cmd::read_user_input_line();
+    let inp = StdInput;
+    let line = match inp.read::<String>() {
+        Some(val) => val,
+        None => String::new()
+    };
 
     if handle_args(cmd::get_cmd_type(line.clone())) {
         return;
