@@ -39,3 +39,7 @@ impl Note {
         println!("{}", self.get_formated_for_print());
     }
 }
+
+impl ToString for Note {
+    fn to_string(&self) -> String { self.get_formated_for_print() }
+}

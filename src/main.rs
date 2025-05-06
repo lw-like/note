@@ -4,6 +4,7 @@ mod structs;
 
 use model::note::*;
 use services::cmd_service as cmd;
+use services::message_service::MessagesService;
 use structs::file_input::FileInput;
 use structs::std_input::StdInput;
 use structs::input::SourceReader;
@@ -48,16 +49,10 @@ fn write_note(note_line: String, mut file: File) -> bool {
         return false;
     }
 
-    file.write_all((note_line.clone() + "\n").as_bytes()).expect("Unable to write to file");
-    print!("Note saved: ");
-    Note::parse(note_line).print();
+    file.write_all((note_line.clone() + "\n").as_bytes())
+        .expect(MessagesService::get_file_write_fail_text());
+    MessagesService::print_save_success(&Note::parse(note_line));
     true
-}
-
-fn print_info() {
-    println!("\n  Type:");
-    println!("      ls or list to list last notes");
-    println!("      If command is not recognized note will be taken");
 }
 
 fn print_last_notes() -> bool {
@@ -65,7 +60,7 @@ fn print_last_notes() -> bool {
     let value = match fin.read::<String>() {
         Some(x) => x,
         None => {
-            println!("Notes not found!");
+            MessagesService::print_notes_not_found();
             String::new()
         }
     };
@@ -133,6 +128,6 @@ fn main() {
         return;
     }
 
-    print_info();
+    MessagesService::print_initial_info();
     handle_user_input();
 }

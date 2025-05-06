@@ -1,7 +1,8 @@
 use std::path::Path;
 use std::{fmt::Display, fs::File};
 use std::io::{BufReader, Read};
-use super::input::{format_input_display, InputBase, SourceReader};
+use crate::services::message_service::MessagesService;
+use super::input::{format_input_display, InputBase, SourceReader, INPUT_SOURCE_NAME_FILE};
 
 pub struct FileInput {
     pub path: String,
@@ -19,7 +20,7 @@ impl FileInput {
     }
 
     pub fn open(path: &String) -> File {
-        File::open(path).expect("Cannot open file!")
+        File::open(path).expect(MessagesService::get_file_read_fail_text())
     }
 }
 
@@ -27,7 +28,7 @@ impl Display for FileInput { fn fmt(&self, f: &mut std::fmt::Formatter) -> std::
 
 impl InputBase for FileInput {
     fn source_name(&self) -> String {
-        "file_input".to_string()
+        INPUT_SOURCE_NAME_FILE.to_string()
     }
 }
 
@@ -38,10 +39,9 @@ impl SourceReader for FileInput {
         }
 
         let mut output = String::new();
-        
         BufReader::new(FileInput::open(&self.path))
             .read_to_string(&mut output)
-            .expect("Unexpected error. Cannot read given file.");
+            .expect(MessagesService::get_file_read_fail_text());
 
         Some(T::from(output))
     }
