@@ -1,5 +1,8 @@
 use std::fmt::{write, Display, Formatter, Result};
 
+pub static INPUT_SOURCE_NAME_STD: &str = "std_input";
+pub static INPUT_SOURCE_NAME_FILE: &str = "file_input";
+
 pub trait InputBase: Display {
     fn source_name(&self) -> String;
 }
