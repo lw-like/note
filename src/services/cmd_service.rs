@@ -1,15 +1,9 @@
-use std::{env, io};
+use std::env;
 
 pub enum CmdType {
     List,
     Note,
     SpawnRows, // Debug/Test purposes @todo: hide it for release builds
-}
-
-pub fn read_user_input_line() -> String {
-    let mut line = String::new();
-    io::stdin().read_line(&mut line).unwrap();
-    String::from(line.trim())
 }
 
 pub fn get_args_cmd() -> String {
