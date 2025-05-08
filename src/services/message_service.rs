@@ -8,7 +8,7 @@ impl MessagesService {
     }
 
     pub fn print_save_success<T: ToString>(data: &T) {
-        print!("Note saved: {}", data.to_string());
+        println!("Note saved: {}", data.to_string());
     }
 
     pub fn print_notes_not_found() {
@@ -19,7 +19,11 @@ impl MessagesService {
         "Unable to write file"
     }
 
-    pub fn get_file_read_fail_text() -> &'static str {
+    pub fn get_file_open_fail_text() -> &'static str {
         "Cannot open file!"
+    }
+
+    pub fn get_init_storage_failure_text() -> &'static str {
+        "Storage cannot be initialized!"
     }
 }
