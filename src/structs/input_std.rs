@@ -1,8 +1,10 @@
 use std::{fmt::Display, io};
 
+use crate::services::message_service::MessagesService;
 use super::input_file::{format_input_display, InputBase, Readable, INPUT_SOURCE_NAME_STD};
 
 pub struct InputStd;
+
 impl Display for InputStd {fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result { format_input_display(f, self) }}
 
 impl InputBase for InputStd {
@@ -13,7 +15,7 @@ impl InputBase for InputStd {
 
 impl Readable for InputStd {
     fn open(&self) -> std::fs::File {
-        panic!("InputStd doesnt support open method!")
+        panic!("{}", MessagesService::get_input_std_no_open_method_text())
     }
 
     fn read<T: From<String>>(&self) -> Option<T> {

@@ -1,6 +1,8 @@
 use std::fmt::{write, Display};
 use std::{env::current_exe, path::{self, Path, PathBuf}};
 
+use crate::services::message_service::MessagesService;
+
 static NOTE_DIR: &str = "notes";
 
 pub struct IOFile {
@@ -19,7 +21,7 @@ impl IOFile {
     }
 
     fn current_path(&self) -> PathBuf {
-        current_exe().expect("Cannot find dir")
+        current_exe().expect(MessagesService::get_no_dir_text())
     }
 
     fn current_path_str(&self) -> String {
@@ -29,7 +31,7 @@ impl IOFile {
     pub fn get_base_dir(&self) -> PathBuf {
         let paths_str= self.current_path_str();
 
-        path::absolute(Path::new(&(paths_str + "../../../" + NOTE_DIR))).expect("Cannot find dir")
+        path::absolute(Path::new(&(paths_str + "../../../" + NOTE_DIR))).expect(MessagesService::get_no_dir_text())
     }
 
     pub fn default_dir_path() -> PathBuf {
