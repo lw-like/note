@@ -23,7 +23,17 @@ impl MessagesService {
         "Cannot open file!"
     }
 
+    pub fn get_no_dir_text() -> &'static str {
+        "Cannot find directory"
+    }
+
     pub fn get_init_storage_failure_text() -> &'static str {
         "Storage cannot be initialized!"
     }
+
+    pub fn get_input_std_no_open_method_text() -> &'static str {
+        "InputStd doesn't support open method!"
+    }
+
+    
 }
