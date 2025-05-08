@@ -1,35 +1,29 @@
-use std::{env, io};
+use std::env;
 
 pub enum CmdType {
+    Interactive,
     List,
     Note,
     SpawnRows, // Debug/Test purposes @todo: hide it for release builds
 }
 
-pub fn read_user_input_line() -> String {
-    let mut line = String::new();
-    io::stdin().read_line(&mut line).unwrap();
-    String::from(line.trim())
-}
-
 pub fn get_args_cmd() -> String {
     let args: Vec<String> = env::args().collect();
-    String::from( if args.len() > 1 { &args[1] } else { "" })
+    String::from( if args.len() > 1 { &args[1] } else { "" }).trim().to_string()
 }
 
-pub fn is_list_command(line: String) -> bool { line == "ls" || line == "list" }
-pub fn is_spawn_records_command(line: String) -> bool { line == "spawn" }
+pub fn is_list_command(arg: &String) -> bool { arg == "ls" || arg == "list" }
+pub fn is_spawn_records_command(arg: &String) -> bool { arg == "spawn" }
+pub fn is_interactive(arg: &String) -> bool { arg == "" }
 
-pub fn get_cmd_type(cmd: String) -> CmdType {
-    if is_list_command(cmd.clone()) {
+pub fn get_cmd_type(cmd: &String) -> CmdType {
+    if is_list_command(&cmd) {
         return CmdType::List;
-    } else if is_spawn_records_command(cmd.clone()) {
+    } else if is_spawn_records_command(&cmd) {
         return CmdType::SpawnRows;
+    } else if is_interactive(&cmd) {
+        return CmdType::Interactive;
     }
 
     CmdType::Note
-}
-
-pub fn get_args_cmd_type() -> CmdType {
-    get_cmd_type(get_args_cmd())
 }
