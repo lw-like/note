@@ -1,8 +1,8 @@
-use std::fs::create_dir_all;
 use crate::model::note::Note;
 use crate::services::{date_service::DateService, message_service::MessagesService};
 use crate::structs::input_file::Readable;
-use crate::structs::{output_file::Writable, io_file::IOFile};
+use crate::structs::{io_file::IOFile, output_file::Writable};
+use std::fs::create_dir_all;
 
 pub struct NoteController;
 
@@ -12,9 +12,10 @@ impl NoteController {
         NoteController::create_required_data_structure();
         NoteController {}
     }
-    
+
     fn create_required_data_structure() {
-        create_dir_all(IOFile::default_dir_path()).expect(MessagesService::get_init_storage_failure_text());
+        create_dir_all(IOFile::default_dir_path())
+            .expect(MessagesService::get_init_storage_failure_text());
     }
 
     pub fn get_daily_file_name(&self) -> String {
@@ -25,7 +26,7 @@ impl NoteController {
         let file_name = self.get_daily_file_name();
         IOFile::new(&file_name)
     }
-    
+
     pub fn save_daily_note(&self, value: &String) -> bool {
         let note = Note::new(value.clone());
         let iofile = self.get_iofile();
@@ -50,8 +51,9 @@ impl NoteController {
                 String::new()
             }
         };
-        
+
         println!("{}", value);
         true
     }
 }
+
