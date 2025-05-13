@@ -27,22 +27,20 @@ impl NoteController {
         IOFile::new(&file_name)
     }
 
-    pub fn save_daily_note(&self, value: &String) -> bool {
+    pub fn save_daily_note(&self, value: &String) {
         let note = Note::new(value.clone());
         let iofile = self.get_iofile();
         iofile.save(note.serialize());
         MessagesService::print_save_success(&note);
-        true
     }
 
-    pub fn spawn_sample_rows(&self) -> bool {
+    pub fn spawn_sample_rows(&self) {
         for i in 0..10 {
             self.save_daily_note(&i.to_string());
         }
-        true
     }
 
-    pub fn print_current_notes(&self) -> bool {
+    pub fn print_current_notes(&self) {
         let iofile = self.get_iofile();
         let value = match iofile.read::<String>() {
             Some(val) => val,
@@ -52,8 +50,6 @@ impl NoteController {
             }
         };
 
-        println!("{}", value);
-        true
+        println!("{}", value)
     }
 }
-
