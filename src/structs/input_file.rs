@@ -1,5 +1,9 @@
-use std::{fmt::{write, Display, Formatter, Result}, fs::File, io::{BufReader, Read}};
 use crate::services::message_service::MessagesService;
+use std::{
+    fmt::{Display, Formatter, Result, write},
+    fs::File,
+    io::{BufReader, Read},
+};
 
 use super::io_file::IOFile;
 
@@ -45,3 +49,4 @@ impl Readable for IOFile {
         Some(T::from(output))
     }
 }
+

@@ -1,8 +1,8 @@
-use std::fs::create_dir_all;
 use crate::model::note::Note;
 use crate::services::{date_service::DateService, message_service::MessagesService};
 use crate::structs::input_file::Readable;
-use crate::structs::{output_file::Writable, io_file::IOFile};
+use crate::structs::{io_file::IOFile, output_file::Writable};
+use std::fs::create_dir_all;
 
 pub struct NoteController;
 
@@ -12,9 +12,10 @@ impl NoteController {
         NoteController::create_required_data_structure();
         NoteController {}
     }
-    
+
     fn create_required_data_structure() {
-        create_dir_all(IOFile::default_dir_path()).expect(MessagesService::get_init_storage_failure_text());
+        create_dir_all(IOFile::default_dir_path())
+            .expect(MessagesService::get_init_storage_failure_text());
     }
 
     pub fn get_daily_file_name(&self) -> String {
@@ -25,23 +26,27 @@ impl NoteController {
         let file_name = self.get_daily_file_name();
         IOFile::new(&file_name)
     }
-    
-    pub fn save_daily_note(&self, value: &String) -> bool {
+
+    pub fn save_daily_note(&self, value: String) {
         let note = Note::new(value.clone());
+
+        if value.is_empty() {
+            println!("Empty note! Nothing saved!");
+            return;
+        }
+
         let iofile = self.get_iofile();
         iofile.save(note.serialize());
         MessagesService::print_save_success(&note);
-        true
     }
 
-    pub fn spawn_sample_rows(&self) -> bool {
+    pub fn spawn_sample_rows(&self) {
         for i in 0..10 {
-            self.save_daily_note(&i.to_string());
+            self.save_daily_note(i.to_string());
         }
-        true
     }
 
-    pub fn print_current_notes(&self) -> bool {
+    pub fn print_current_notes(&self) {
         let iofile = self.get_iofile();
         let value = match iofile.read::<String>() {
             Some(val) => val,
@@ -50,8 +55,7 @@ impl NoteController {
                 String::new()
             }
         };
-        
-        println!("{}", value);
-        true
+
+        println!("{}", value)
     }
 }

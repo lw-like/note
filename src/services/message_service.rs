@@ -1,5 +1,8 @@
 pub struct MessagesService;
 
+// @todo: Move strings to proper structure (learn best practices to do it in Rust)
+// @todo: Refactor usage of functions inside of 'expect' method (Clippy warning)
+
 impl MessagesService {
     pub fn print_initial_info() {
         println!("\n  Type:");
@@ -34,6 +37,4 @@ impl MessagesService {
     pub fn get_input_std_no_open_method_text() -> &'static str {
         "InputStd doesn't support open method!"
     }
-
-    
 }
