@@ -21,6 +21,6 @@ fn args_handler(note_ctrl: &NoteController) {
         Some(Commands::Spawn) => note_ctrl.spawn_sample_rows(),
         Some(Commands::Dir) => println!("{}", IOFile::default_dir_path().display()),
         Some(Commands::List) | Some(Commands::Ls) => note_ctrl.print_current_notes(),
-        None => note_ctrl.save_daily_note(&args_note),
+        None => note_ctrl.save_daily_note(args_note),
     }
 }

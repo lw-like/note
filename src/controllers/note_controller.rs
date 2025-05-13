@@ -27,8 +27,14 @@ impl NoteController {
         IOFile::new(&file_name)
     }
 
-    pub fn save_daily_note(&self, value: &String) {
+    pub fn save_daily_note(&self, value: String) {
         let note = Note::new(value.clone());
+
+        if value.is_empty() {
+            println!("Empty note! Nothing saved!");
+            return;
+        }
+
         let iofile = self.get_iofile();
         iofile.save(note.serialize());
         MessagesService::print_save_success(&note);
@@ -36,7 +42,7 @@ impl NoteController {
 
     pub fn spawn_sample_rows(&self) {
         for i in 0..10 {
-            self.save_daily_note(&i.to_string());
+            self.save_daily_note(i.to_string());
         }
     }
 
