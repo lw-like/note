@@ -41,21 +41,27 @@ impl NoteController {
     }
 
     pub fn spawn_sample_rows(&self) {
+        print!("Creating sample notes...\n" );
+        
         for i in 0..10 {
             self.save_daily_note(i.to_string());
         }
     }
 
-    pub fn print_current_notes(&self) {
+    pub fn get_current_notes(&self) -> String {
         let iofile = self.get_iofile();
-        let value = match iofile.read::<String>() {
+        
+        match iofile.read::<String>() {
             Some(val) => val,
             None => {
                 MessagesService::print_notes_not_found();
                 String::new()
             }
-        };
+        }
+    }
 
-        println!("{}", value)
+
+    pub fn print_current_notes(&self) {
+        println!("{}", self.get_current_notes())
     }
 }
