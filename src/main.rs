@@ -1,16 +1,14 @@
 use clap::Parser;
 use structs::cli::*;
+use crate::ui_core::*;
 use crate::app::App;
 
-mod tui;
-mod action;
-mod config;
+mod ui_core;
 mod components;
 mod controllers;
 mod model;
 mod services;
 mod structs;
-mod app;
 
 #[tokio::main]
 async fn main() -> color_eyre::Result<()> {

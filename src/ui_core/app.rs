@@ -6,8 +6,9 @@ use tracing::{debug, info};
 
 use crate::{
     action::Action,
-    components::{Component, home::Home},
+    component::Component,
     config::Config,
+    components::home::Home,
     tui::{Event, Tui},
 };
 
