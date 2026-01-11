@@ -1,6 +1,5 @@
 use clap::{Parser, Subcommand};
 use std::env;
-
 pub fn get_args_cmd() -> String {
     let args: Vec<String> = env::args().collect();
     String::from(if args.len() > 1 { &args[1] } else { "" })
@@ -11,6 +10,14 @@ pub fn get_args_cmd() -> String {
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, ignore_errors(true), trailing_var_arg = true)]
 pub struct Cli {
+    /// Tick rate, i.e. number of ticks per second
+    #[arg(short, long, value_name = "FLOAT", default_value_t = 4.0)]
+    pub tick_rate: f64,
+
+    /// Frame rate, i.e. number of frames per second
+    #[arg(short, long, value_name = "FLOAT", default_value_t = 60.0)]
+    pub frame_rate: f64,
+    
     #[command(subcommand)]
     pub cmd: Option<Commands>,
 }
